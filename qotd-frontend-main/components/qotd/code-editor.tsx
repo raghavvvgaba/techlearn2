@@ -17,14 +17,16 @@ interface CodeEditorProps {
   setLanguage: (language: string) => void;
   onRun: () => void;
   onSubmit: () => void;
+  canRun: boolean;
+  canSubmit: boolean;
+  isBusy: boolean;
+  runLabel?: string;
+  submitLabel?: string;
 }
 
 const languages = [
-  { value: "javascript", label: "JavaScript" },
   { value: "python", label: "Python" },
   { value: "java", label: "Java" },
-  { value: "cpp", label: "C++" },
-  { value: "typescript", label: "TypeScript" },
 ];
 
 export function CodeEditor({
@@ -34,6 +36,11 @@ export function CodeEditor({
   setLanguage,
   onRun,
   onSubmit,
+  canRun,
+  canSubmit,
+  isBusy,
+  runLabel,
+  submitLabel,
 }: CodeEditorProps) {
   const lineNumbers = code.split("\n").length;
 
@@ -58,14 +65,20 @@ export function CodeEditor({
             variant="outline"
             size="sm"
             onClick={onRun}
+            disabled={isBusy || !canRun}
             className="h-8 gap-2 text-sm bg-transparent"
           >
             <Play className="w-3.5 h-3.5" />
-            Run Code
+            {runLabel || "Run Code"}
           </Button>
-          <Button size="sm" onClick={onSubmit} className="h-8 gap-2 text-sm">
+          <Button
+            size="sm"
+            onClick={onSubmit}
+            disabled={isBusy || !canSubmit}
+            className="h-8 gap-2 text-sm"
+          >
             <Send className="w-3.5 h-3.5" />
-            Submit
+            {submitLabel || "Submit"}
           </Button>
         </div>
       </div>
